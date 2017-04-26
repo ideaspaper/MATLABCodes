@@ -1,0 +1,16 @@
+function xncross = crossproc(xn)
+[r, ~] = size(xn);
+CrossRnd = round(randgen(r, 1, 15));
+xncross = uint16(zeros(r, 1));
+for i=1:2:r,
+    Maskbit2 = double(2 .^ CrossRnd(i, 1) - 1);
+    Maskbit1 = 65535 - Maskbit2;
+    Maskbit2 = uint16(Maskbit2);
+    Maskbit1 = uint16(Maskbit1);
+    xt1 = xn(i, 1);
+    xt2 = xn(i+1, 1);
+    xt3 = bitor(bitand(xt1, Maskbit1), bitand(xt2, Maskbit2));
+    xt4 = bitor(bitand(xt1, Maskbit2), bitand(xt2, Maskbit1));
+    xncross(i, 1) = xt3;
+    xncross(i+1, 1) = xt4;
+end
